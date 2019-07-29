@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, Image} from 'react-native';
+import firebase from 'firebase';
 
 import Topo from './src/components/topo.js'
 import Icone from './src/components/icone.js'
@@ -13,6 +14,26 @@ class App extends Component{
       escolhaComputador: '',
       resultadoJogo: ''
     }
+  }
+
+  componentWillMount(){
+    var firebaseConfig = {
+
+    };
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  armazenarDados(jogada){
+    let data = new Date().getDate();
+    let mes = new Date().getMonth() + 1;
+    let ano = new Date().getFullYear();
+    let hora = new Date().getHours();
+    let minuto = new Date().getMinutes();
+    let segundo = new Date().getSeconds();
+
+    let time = (data + '/' + mes + '/' + ano + ' ' + hora + ':' + minuto + ':' + segundo);
+
+    firebase.database().ref("ultimasJogadas").push(jogada + " - " + time);
   }
 
   jokenpo = (escolha) => {
@@ -56,6 +77,8 @@ class App extends Component{
   }
 
   this.setState({resultadoJogo: resultado});
+
+  this.armazenarDados(resultado);
 
 }
 
