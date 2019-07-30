@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import firebase from 'firebase';
+import moment from 'moment';
 
 import Topo from './topo.js';
 import Icone from './icone.js';
@@ -25,22 +26,15 @@ class Inicial extends Component{
   }
 
   armazenarDados(jogada){
-    let data = new Date().getDate();
-    let mes = new Date().getMonth() + 1;
-    let ano = new Date().getFullYear();
-    let hora = new Date().getHours();
-    let minuto = new Date().getMinutes();
-    let segundo = new Date().getSeconds();
-
-    let time = (data + '/' + mes + '/' + ano + ' ' + hora + ':' + minuto + ':' + segundo);
-
-    firebase.database().ref("ultimasJogadas").push(jogada + " - " + time);
+    let data = moment().utcOffset('-03:00').format('DD/MM HH:mm:ss');
+    firebase.database().ref("ultimasJogadas").push("Resultado: " + jogada + " - Horário: " + data);
   }
 
   jokenpo = (escolha) => {
   this.setState({escolhaUsuario: escolha});
 
   var escolhaComputador = Math.floor(Math.random() * 3);
+
   if (escolhaComputador == 0){
     this.setState({escolhaComputador: 'Pedra'});
   }else if (escolhaComputador == 1){
@@ -59,7 +53,9 @@ class Inicial extends Component{
     }else{
       resultado = 'Você Perdeu';
     }
-  }else if (escolhaComputador == 1) {
+  }
+
+  if (escolhaComputador == 1) {
     if (escolha == 'Pedra') {
       resultado = 'Você Perdeu';
     }else if (escolha == 'Papel') {
@@ -67,7 +63,9 @@ class Inicial extends Component{
     }else {
       resultado = 'Você Venceu';
     }
-  }else if (escolhaComputador == 2) {
+  }
+
+  if (escolhaComputador == 2) {
     if (escolha == 'Pedra') {
       resultado = 'Você Venceu';
     }else if (escolha == 'Papel') {
