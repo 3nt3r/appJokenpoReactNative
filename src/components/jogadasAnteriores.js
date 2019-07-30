@@ -12,9 +12,9 @@ class Jogadas extends Component{
   }
 
   componentWillMount(){
-    firebase.database().ref("ultimasJogadas").on('value', (snapshot) => {
+    firebase.database().ref("ultimasJogadas").once("value", (snapshot) => {
       this.setState({dados: Object.values(snapshot.val())});
-    });
+    })
   }
 
   render(){
