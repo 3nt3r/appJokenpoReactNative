@@ -15,9 +15,10 @@ class Jogadas extends Component{
   componentWillMount(){
     firebase.database().ref("ultimasJogadas").once("value", (snapshot) => {
       if(snapshot.val() == null){
-        this.setState({dados: Object.values(["Nenhuma jogada encontrada."]), loaded: true});
+        this.setState({dados: ["Nenhuma jogada encontrada."], loaded: true});
       }else{
-        this.setState({dados: Object.values(snapshot.val()), loaded: true});
+        let vetorInvertido = Object.values(snapshot.val()).slice(0).reverse();
+        this.setState({dados: vetorInvertido, loaded: true});
       }
     });
   }

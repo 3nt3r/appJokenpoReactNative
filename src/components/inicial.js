@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {StyleSheet, Text, View, Button, Vibration} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import firebase from 'firebase';
 import moment from 'moment';
@@ -60,7 +60,7 @@ class Inicial extends Component{
       resultado = 'Você Perdeu';
     }else if (escolha == 'Papel') {
       resultado = 'Empate';
-    }else {
+    }else{
       resultado = 'Você Venceu';
     }
   }
@@ -70,7 +70,7 @@ class Inicial extends Component{
       resultado = 'Você Venceu';
     }else if (escolha == 'Papel') {
       resultado = 'Você Perdeu';
-    }else {
+    }else{
       resultado = 'Empate';
     }
   }
@@ -79,6 +79,9 @@ class Inicial extends Component{
 
   this.armazenarDados(resultado);
 
+  if(resultado == 'Você Venceu'){
+    Vibration.vibrate(500);
+  }
 }
 
   render(){
@@ -108,7 +111,7 @@ class Inicial extends Component{
         </View>
 
         <View style={styles.btnVerJogadas}>
-          <Button title="Jogadas Anteriores" onPress={() => Actions.jogadas()}/>
+          <Button title="Últimas Jogadas" onPress={() => Actions.jogadas()}/>
         </View>
 
       </View>

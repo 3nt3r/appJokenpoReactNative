@@ -8,7 +8,7 @@ const App = () => (
   <Router>
     <Stack key="root">
       <Scene key="principal" component={Inicial} hideNavBar={true} />
-      <Scene key="jogadas" component={Jogadas} title="Jogadas Anteriores" hideNavBar={false} />
+      <Scene key="jogadas" component={Jogadas} title="Últimas Jogadas" hideNavBar={false} />
     </Stack>
   </Router>
 );
