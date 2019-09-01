@@ -17,7 +17,8 @@ class Topo extends Component{
 const styles = StyleSheet.create({
   informativo: {
     fontSize: 15,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#1E90FF'
   }
 });
 
