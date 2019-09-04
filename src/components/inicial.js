@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, Vibration} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+
 import firebase from 'firebase';
 import moment from 'moment';
 
@@ -11,77 +12,86 @@ class Inicial extends Component{
 
   constructor(props){
     super(props);
+
     this.state = {
       escolhaUsuario: '',
       escolhaComputador: '',
       resultadoJogo: ''
     }
+
   }
 
   componentWillMount(){
+
     var firebaseConfig = {
 
     };
+
     firebase.initializeApp(firebaseConfig);
+
   }
 
   armazenarDados(jogada){
+
     let data = moment().utcOffset('-03:00').format('DD/MM HH:mm:ss');
-    firebase.database().ref("ultimasJogadas").push("Resultado: " + jogada + " - Horário: " + data);
+    firebase.database().ref("ultimasJogadas").push(jogada + " - Data: " + data + " - (R)");
+
   }
 
   jokenpo = (escolha) => {
-  this.setState({escolhaUsuario: escolha});
 
-  var escolhaComputador = Math.floor(Math.random() * 3);
+    this.setState({escolhaUsuario: escolha});
 
-  if (escolhaComputador == 0){
-    this.setState({escolhaComputador: 'Pedra'});
-  }else if (escolhaComputador == 1){
-    this.setState({escolhaComputador: 'Papel'});
-  }else{
-    this.setState({escolhaComputador: 'Tesoura'});
-  }
+    var escolhaComputador = Math.floor(Math.random() * 3);
 
-  var resultado = '';
+    var resultado = '';
 
-  if (escolhaComputador == 0) {
-    if (escolha == 'Pedra') {
-      resultado = 'Empate';
-    }else if (escolha == 'Papel') {
-      resultado = 'Você Venceu';
+    if (escolhaComputador == 0){
+      this.setState({escolhaComputador: 'Pedra'});
+    }else if (escolhaComputador == 1){
+      this.setState({escolhaComputador: 'Papel'});
     }else{
-      resultado = 'Você Perdeu';
+      this.setState({escolhaComputador: 'Tesoura'});
     }
-  }
 
-  if (escolhaComputador == 1) {
-    if (escolha == 'Pedra') {
-      resultado = 'Você Perdeu';
-    }else if (escolha == 'Papel') {
-      resultado = 'Empate';
-    }else{
-      resultado = 'Você Venceu';
+    if (escolhaComputador == 0) {
+      if (escolha == 'Pedra') {
+        resultado = 'Empate';
+      }else if (escolha == 'Papel') {
+        resultado = 'Você Venceu';
+      }else{
+        resultado = 'Você Perdeu';
+      }
     }
-  }
 
-  if (escolhaComputador == 2) {
-    if (escolha == 'Pedra') {
-      resultado = 'Você Venceu';
-    }else if (escolha == 'Papel') {
-      resultado = 'Você Perdeu';
-    }else{
-      resultado = 'Empate';
+    if (escolhaComputador == 1) {
+      if (escolha == 'Pedra') {
+        resultado = 'Você Perdeu';
+      }else if (escolha == 'Papel') {
+        resultado = 'Empate';
+      }else{
+        resultado = 'Você Venceu';
+      }
     }
-  }
 
-  this.setState({resultadoJogo: resultado});
+    if (escolhaComputador == 2) {
+      if (escolha == 'Pedra') {
+        resultado = 'Você Venceu';
+      }else if (escolha == 'Papel') {
+        resultado = 'Você Perdeu';
+      }else{
+        resultado = 'Empate';
+      }
+    }
 
-  this.armazenarDados(resultado);
+    this.setState({resultadoJogo: resultado});
 
-  if(resultado == 'Você Venceu'){
-    Vibration.vibrate(500);
-  }
+    this.armazenarDados(resultado);
+
+    if(resultado == 'Você Venceu'){
+      Vibration.vibrate(500);
+    }
+
 }
 
   render(){
@@ -143,7 +153,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   containerPrincipal: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff'
   }
 });
 

@@ -5,12 +5,14 @@ const jokenpo = require('../../imagens/jokenpo.png');
 
 class Topo extends Component{
   render(){
+
     return (
         <View>
           <Text style={styles.informativo}> React Native </Text>
           <Image source={jokenpo} />
         </View>
     );
+
   }
 }
 
