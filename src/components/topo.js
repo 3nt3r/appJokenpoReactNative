@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
   informativo: {
     fontSize: 15,
     textAlign: 'center',
-    color: '#1E90FF'
+    color: '#1E90FF',
+    fontWeight: 'bold'
   }
 });
 
