@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, Vibration} from 'react-native';
+import {StyleSheet, Text, View, Button, Vibration, ToastAndroid} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import firebase from 'firebase';
@@ -12,33 +12,56 @@ class Inicial extends Component{
 
   constructor(props){
     super(props);
-
     this.state = {
       escolhaUsuario: '',
       escolhaComputador: '',
-      resultadoJogo: ''
+      resultadoJogo: '',
+      primeiroTempoCarregamento: 0,
+      contador: 1
     }
-
   }
 
   componentWillMount(){
+    let data = moment().utcOffset('-03:00').format('HH:mm:ss:SSS');
+    let tempos = data.split(":");
+
+    let minutosParaMilissegundos = parseInt(tempos[2]) * 1000;
+    let milissegundos = parseInt(tempos[3]);
+
+    let soma = minutosParaMilissegundos + milissegundos;
+
+    this.setState({primeiroTempoCarregamento: parseInt(soma)});
 
     var firebaseConfig = {
 
     };
-
     firebase.initializeApp(firebaseConfig);
+  }
 
+  componentDidMount(){
+    let data = moment().utcOffset('-03:00').format('HH:mm:ss:SSS');
+    let tempos = data.split(":");
+
+    let minutosParaMilissegundos = parseInt(tempos[2]) * 1000;
+    let milissegundos = parseInt(tempos[3]);
+
+    let segundoTempoCarregamento = minutosParaMilissegundos + milissegundos;
+
+    let resultado = segundoTempoCarregamento - this.state.primeiroTempoCarregamento;
+
+    ToastAndroid.show("Carregado em: " + resultado.toString() + "ms", ToastAndroid.LONG);
   }
 
   armazenarDados(jogada){
-
     let data = moment().utcOffset('-03:00').format('DD/MM HH:mm:ss');
     firebase.database().ref("ultimasJogadas").push(jogada + " - Data: " + data + " - (R)");
-
   }
 
   jokenpo = (escolha) => {
+
+    let incrementa = this.state.contador + 1;
+    this.setState({contador: incrementa});
+    ToastAndroid.show("Jogada Nº " + this.state.contador.toString(), ToastAndroid.LONG);
 
     this.setState({escolhaUsuario: escolha});
 
@@ -92,7 +115,7 @@ class Inicial extends Component{
       Vibration.vibrate(500);
     }
 
-}
+  }
 
   render(){
     return(
